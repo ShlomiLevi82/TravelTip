@@ -9,6 +9,8 @@ window.onPanTo = onPanTo
 window.onGetLocs = onGetLocs
 window.onGetUserPos = onGetUserPos
 window.renderPlaces = renderPlaces
+window.onRemovePlace = onRemovePlace
+window.onAddPlace = onAddPlace
 
 function onInit() {
   mapService
@@ -28,11 +30,13 @@ function renderPlaces(places) {
   console.log('rendering', places)
 
   var strHTMLs = places.map((place) => {
-    return `<tr class="places-preview">
-                    <td> Place <td>
-                    <td> class="name">${place.name}</td>
-                    <td> class="lat>${place.lat}</td>
-                    <td> class="lat>${place.lng}</td>
+    return `<tr>
+                    <td>${place.placeName}
+                    <td>${place.lat}</td>
+                    <td>${place.lng}</td>
+                    <td>${place.createdAt}</td>
+                    <td><button onclick="onPanTo(${place.lat}, ${place.lng})">Go</button></td>
+                    <td><button onclick="onRemovePlace('${place.id}')">Delete</button></td>
                 </tr>`
   })
 
@@ -50,6 +54,14 @@ function getPosition() {
   })
 }
 
+function onAddPlace() {
+  console.log('adding place')
+  storageService.query('placeDB', 200).then((places) => {
+    console.log('places11', places)
+    renderPlaces(places)
+  })
+}
+
 function onAddMarker() {
   console.log('Adding a marker')
   mapService.addMarker({ lat: 32.0749831, lng: 34.9120554 })
@@ -62,6 +74,14 @@ function onGetLocs() {
   })
 }
 
+function onRemovePlace(id) {
+  storageService.remove('placeDB', id)
+  storageService.query('placeDB', 200).then((places) => {
+    console.log('places11', places)
+    renderPlaces(places)
+  })
+}
+
 function onGetUserPos() {
   getPosition()
     .then((pos) => {
@@ -69,6 +89,10 @@ function onGetUserPos() {
       document.querySelector(
         '.user-pos'
       ).innerText = `Latitude: ${pos.coords.latitude} - Longitude: ${pos.coords.longitude}`
+      document.querySelector(
+        '.user-pos'
+      ).innerText = `Latitude: ${pos.coords.latitude} - Longitude: ${pos.coords.longitude}`
+      onPanTo(pos.coords.latitude, pos.coords.longitude)
     })
     .catch((err) => {
       console.log('err!!!', err)

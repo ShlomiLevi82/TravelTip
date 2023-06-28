@@ -17,7 +17,6 @@ function initMap(lat = 32.0749831, lng = 34.9120554) {
       center: { lat, lng },
       zoom: 15,
     })
-    // console.log('Map!', gMap)
     gMap.addListener('click', (ev) => {
       console.log('ev', ev)
       const placeName = prompt('Place name?', 'Place 1')
@@ -26,6 +25,7 @@ function initMap(lat = 32.0749831, lng = 34.9120554) {
       const lng = ev.latLng.lng().toFixed(4)
       placeService.setPlace(placeName, lat, lng)
     })
+    // console.log('Map!', gMap)
   })
 }
 
@@ -45,7 +45,7 @@ function panTo(lat, lng) {
 
 function _connectGoogleApi() {
   if (window.google) return Promise.resolve()
-  const API_KEY = 'AIzaSyCgQHlqbYdwMXiOyUOGamanoXAxsMiKxao'
+  const API_KEY = 'AIzaSyDIZe9UK-T0ntdKXCi9sPRlMdVgkS54wW0'
   var elGoogleApi = document.createElement('script')
   elGoogleApi.src = `https://maps.googleapis.com/maps/api/js?key=${API_KEY}`
   elGoogleApi.async = true

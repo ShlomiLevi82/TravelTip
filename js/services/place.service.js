@@ -4,7 +4,7 @@ const KEY = 'placeDB'
 
 export const placeService = {
   createPlace,
-  addStorage,
+  addToStorage,
   setPlace,
   getPlaces,
   getPlaceById,
@@ -22,7 +22,7 @@ function setPlace(placeName, lat, lng) {
     updatedAt: makeDate(),
   }
   console.log('place', place)
-  addStorage()
+  addToStorage()
   return place
 }
 
@@ -50,14 +50,13 @@ function createPlace() {
   })
 }
 
-function addStorage() {
+function addToStorage() {
   storageService.post(KEY, place).then((res) => {
     console.log('res', res)
     return res
   })
 }
 
-// makeDate()
 function makeDate() {
   const date = new Date(Date.now())
   const hours = date.getHours().toString().padStart(2, '0')
