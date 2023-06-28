@@ -9,6 +9,8 @@ window.onPanTo = onPanTo
 window.onGetLocs = onGetLocs
 window.onGetUserPos = onGetUserPos
 window.renderPlaces = renderPlaces
+window.onRemovePlace = onRemovePlace
+window.onAddPlace = onAddPlace
 
 function onInit() {
   mapService
@@ -17,8 +19,6 @@ function onInit() {
       console.log('Map is ready')
     })
     .catch(() => console.log('Error: cannot init map'))
-  // }
-  // placeService.getPlaceById(placeId).then((places) => {
   storageService.query('placeDB', 200).then((places) => {
     console.log('places11', places)
     renderPlaces(places)
@@ -35,8 +35,8 @@ function renderPlaces(places) {
                     <td>${place.lat}</td>
                     <td>${place.lng}</td>
                     <td>${place.createdAt}</td>
-                    <td><button>Go</button></td>
-                    <td><button>Delete</button></td>
+                    <td><button onclick="onPanTo(${place.lat}, ${place.lng})">Go</button></td>
+                    <td><button onclick="onRemovePlace('${place.id}')">Delete</button></td>
                 </tr>`
   })
 
@@ -52,6 +52,14 @@ function getPosition() {
   })
 }
 
+function onAddPlace() {
+  console.log('adding place')
+  storageService.query('placeDB', 200).then((places) => {
+    console.log('places11', places)
+    renderPlaces(places)
+  })
+}
+
 function onAddMarker() {
   console.log('Adding a marker')
   mapService.addMarker({ lat: 32.0749831, lng: 34.9120554 })
@@ -64,18 +72,26 @@ function onGetLocs() {
   })
 }
 
+function onRemovePlace(id) {
+  storageService.remove('placeDB', id)
+  storageService.query('placeDB', 200).then((places) => {
+    console.log('places11', places)
+    renderPlaces(places)
+  })
+}
+
 function onGetUserPos() {
-  console.log('hi')
   getPosition()
     .then((pos) => {
       console.log('User position is:', pos.coords)
       document.querySelector('.user-pos').innerText = `Latitude: ${pos.coords.latitude} - Longitude: ${pos.coords.longitude}`
+      onPanTo(pos.coords.latitude, pos.coords.longitude)
     })
     .catch((err) => {
       console.log('err!!!', err)
     })
 }
-function onPanTo() {
+function onPanTo(lat, lng) {
   console.log('Panning the Map')
-  mapService.panTo(35.6895, 139.6917)
+  mapService.panTo(lat, lng)
 }
