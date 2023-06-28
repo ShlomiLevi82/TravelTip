@@ -1,6 +1,8 @@
 import { storageService } from './async-storage.service.js'
 import { util } from './util.service.js'
 
+const wikiUrl = `https://en.wikipedia.org/w/api.php?&origin=*&action=query&list=search&%20srsearch=beatles&format=json`
+
 export const places = {
   createPlace,
   saveToStorage,
@@ -36,10 +38,10 @@ function saveToStorage() {
 getPlaceData()
 function getPlaceData() {
   const prmPlace = axios
-    // .get(wikiUrl)
+    .get(wikiUrl)
     .then((res) => res.data)
     .then((data) => {
-      const data = data.query.search.map((item) => item.snippet)
+      //   const data = data.query.search.map((item) => item.snippet)
       console.log('data:', data)
       return data
     })
