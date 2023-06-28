@@ -2,6 +2,7 @@ import { locService } from './services/loc.service.js'
 import { mapService } from './services/map.service.js'
 import { placeService } from './services/place.service.js'
 import { storageService } from './services/async-storage.service.js'
+import { storageService } from './services/async-storage.service.js'
 
 window.onload = onInit
 window.onAddMarker = onAddMarker
@@ -23,11 +24,6 @@ function onInit() {
   })
 }
 
-// placeService.getPlace().then((places) => {
-//   renderPlaces(places)
-// })
-
-// renderPlaces(places)
 function renderPlaces(placeList) {
   console.log('rendering')
 
@@ -41,7 +37,10 @@ function renderPlaces(placeList) {
                     <p class="lat>${placeList.lat}</p>
                 </article>`
   })
-  const elPlaces = document.querySelector('.place-container')
+
+  console.log('strHTMLs', strHTMLs)
+  const elPlaces = document.querySelector('tbody')
+  console.log('elPlaces', elPlaces)
   elPlaces.innerHTML = strHTMLs.join('')
 }
 
