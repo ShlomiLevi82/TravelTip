@@ -1,6 +1,7 @@
 import { locService } from './services/loc.service.js'
 import { mapService } from './services/map.service.js'
 import { placeService } from './services/place.service.js'
+import { storageService } from './services/async-storage.service.js'
 
 window.onload = onInit
 window.onAddMarker = onAddMarker
@@ -16,18 +17,28 @@ function onInit() {
       console.log('Map is ready')
     })
     .catch(() => console.log('Error: cannot init map'))
+  storageService.query('placeDB', 200).then((places) => {
+    renderPlaces(places)
+    console.log('places', places)
+  })
 }
-placeService.getPlace().then((places) => {
-  renderPlaces(places)
-})
+
+// placeService.getPlace().then((places) => {
+//   renderPlaces(places)
+// })
 
 // renderPlaces(places)
-function renderPlaces(places) {
+function renderPlaces(placeList) {
   console.log('rendering')
-  var strHTMLs = places.map((place) => {
+
+  storageService.query('placeDB').then((placeList) => {
+    return placeList
+  })
+
+  var strHTMLs = placeList.map((placeList) => {
     return `<article class="places-preview">
-                    <p class="name">${place.name}</p>
-                    <p class="lat>${place.lat}</p>
+                    <p class="name">${placeList.name}</p>
+                    <p class="lat>${placeList.lat}</p>
                 </article>`
   })
   const elPlaces = document.querySelector('.place-container')
@@ -58,7 +69,9 @@ function onGetUserPos() {
   getPosition()
     .then((pos) => {
       console.log('User position is:', pos.coords)
-      document.querySelector('.user-pos').innerText = `Latitude: ${pos.coords.latitude} - Longitude: ${pos.coords.longitude}`
+      document.querySelector(
+        '.user-pos'
+      ).innerText = `Latitude: ${pos.coords.latitude} - Longitude: ${pos.coords.longitude}`
     })
     .catch((err) => {
       console.log('err!!!', err)
