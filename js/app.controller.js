@@ -19,6 +19,7 @@ function onInit() {
       console.log('Map is ready')
     })
     .catch(() => console.log('Error: cannot init map'))
+
   storageService.query('placeDB', 200).then((places) => {
     console.log('places11', places)
     renderPlaces(places)
@@ -30,7 +31,7 @@ function renderPlaces(places) {
   console.log('rendering', places)
 
   var strHTMLs = places.map((place) => {
-    return `    <tr>
+    return `<tr>
                     <td>${place.placeName}
                     <td>${place.lat}</td>
                     <td>${place.lng}</td>
