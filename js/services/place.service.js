@@ -6,6 +6,8 @@ export const placeService = {
   createPlace,
   addStorage,
   setPlace,
+  getPlaces,
+  getPlaceById,
 }
 
 let place = {}
@@ -24,9 +26,19 @@ function setPlace(placeName, lat, lng) {
   return place
 }
 
-function getPlace() {
+function getPlaces() {
+  storageService.query('placeDB').then((places) => {
+    console.log('places', places)
+    return places
+  })
+}
+
+function getPlaceById(placeId) {
   return new Promise((resolve) => {
     resolve(place)
+
+    storageService.get(KEY, placeId)
+    console.log('place', place)
   })
 }
 
