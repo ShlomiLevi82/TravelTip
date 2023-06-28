@@ -1,3 +1,5 @@
+import { placeService } from './place.service.js'
+
 export const mapService = {
   initMap,
   addMarker,
@@ -18,9 +20,11 @@ function initMap(lat = 32.0749831, lng = 34.9120554) {
     console.log('Map!', gMap)
     gMap.addListener('click', (ev) => {
       console.log('ev', ev)
+      const placeName = prompt('Place name?', 'Place 1')
+      if (!placeName) return
       const lat = ev.latLng.lat()
       const lng = ev.latLng.lng()
-      console.log('lat,lng', lat, lng)
+      placeService.setPlace(placeName, lat, lng)
     })
   })
 }

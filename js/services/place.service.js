@@ -4,32 +4,37 @@ const KEY = 'placeDB'
 
 export const placeService = {
   createPlace,
-  saveToStorage,
+  addStorage,
+  setPlace,
 }
 
-const place = {
-  name: 'Israel',
-  lat: 31,
-  lng: 33,
-  weather: '19',
-  createdAt: Date.now(),
-  updatedAt: Date.now(),
+let place = {}
+
+function setPlace(placeName, lat, lng) {
+  console.log('placeName, lat, lng:', placeName, lat, lng)
+  place = {
+    placeName: placeName,
+    lat: lat,
+    lng: lng,
+    createdAt: Date.now(),
+    updatedAt: Date.now(),
+  }
+  console.log('place', place)
+  addStorage()
+  return place
 }
 
 function createPlace() {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      resolve(place)
+      resolve(setPlace)
     }, 2000)
   })
 }
 
-function saveToStorage() {
-  const x = storageService
-    .post(KEY, place)
-    .then((res) => console.log('res', res))
-
-  console.log('x', x)
+function addStorage() {
+  storageService.post(KEY, place).then((res) => {
+    console.log('res', res)
+    return res
+  })
 }
-
-function renderPlaces() {}
