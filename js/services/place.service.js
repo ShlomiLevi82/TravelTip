@@ -18,8 +18,8 @@ function setPlace(placeName, lat, lng) {
     placeName: placeName,
     lat: lat,
     lng: lng,
-    createdAt: Date.now(),
-    updatedAt: Date.now(),
+    createdAt: makeDate(),
+    updatedAt: makeDate(),
   }
   console.log('place', place)
   addStorage()
@@ -55,4 +55,16 @@ function addStorage() {
     console.log('res', res)
     return res
   })
+}
+
+// makeDate()
+function makeDate() {
+  const date = new Date(Date.now())
+  const hours = date.getHours().toString().padStart(2, '0')
+  const minutes = date.getMinutes().toString().padStart(2, '0')
+  const dateString = date.toString().substring(4, 15)
+  const timeString = `${hours}:${minutes}`
+  const dateTimeString = `${dateString} ${timeString}`
+  console.log('dateTimeString', dateTimeString)
+  return dateTimeString
 }
