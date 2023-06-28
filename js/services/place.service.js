@@ -1,16 +1,14 @@
 import { storageService } from './async-storage.service.js'
-import { util } from './util.service.js'
 
-const wikiUrl = `https://en.wikipedia.org/w/api.php?&origin=*&action=query&list=search&%20srsearch=beatles&format=json`
+const KEY = 'placeDB'
 
-export const places = {
+export const placeService = {
   createPlace,
   saveToStorage,
-  getPlaceData,
+  getPlace,
 }
 
 const place = {
-  id: util.makeId(),
   name: 'Israel',
   lat: 31,
   lng: 33,
@@ -19,35 +17,24 @@ const place = {
   updatedAt: Date.now(),
 }
 
-let newPlace = {}
+function getPlace() {
+  return new Promise((resolve) => {
+    resolve(place)
+  })
+}
 
 function createPlace() {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       resolve(place)
-    }, 1000)
+    }, 2000)
   })
 }
 
 function saveToStorage() {
-  //   storageService.post(place, newPlace)
-  //   const x =
-  console.log(storageService.post(place, newPlace))
+  storageService.post(KEY, place).then((res) => {
+    return res
+  })
 }
 
-getPlaceData()
-function getPlaceData() {
-  const prmPlace = axios
-    .get(wikiUrl)
-    .then((res) => res.data)
-    .then((data) => {
-      //   const data = data.query.search.map((item) => item.snippet)
-      console.log('data:', data)
-      return data
-    })
-    .catch((error) => {
-      console.error('Error:', error)
-    })
-
-  return prmPlace
-}
+function renderPlaces() {}
