@@ -17,30 +17,28 @@ function onInit() {
       console.log('Map is ready')
     })
     .catch(() => console.log('Error: cannot init map'))
-  // }
-  // placeService.getPlaceById(placeId).then((places) => {
+
   storageService.query('placeDB', 200).then((places) => {
     console.log('places11', places)
     renderPlaces(places)
   })
 }
-// )
 
 function renderPlaces(places) {
   console.log('rendering', places)
 
   var strHTMLs = places.map((place) => {
-    return `    <tr>
-                    <td>${place.placeName}
-                    <td>${place.lat}</td>
-                    <td>${place.lng}</td>
-                    <td>${place.createdAt}</td>
-                    <td><button>Go</button></td>
-                    <td><button>Delete</button></td>
+    return `<tr class="places-preview">
+                    <td> Place <td>
+                    <td> class="name">${place.name}</td>
+                    <td> class="lat>${place.lat}</td>
+                    <td> class="lat>${place.lng}</td>
                 </tr>`
   })
 
+  console.log('strHTMLs', strHTMLs)
   const elPlaces = document.querySelector('tbody')
+  console.log('elPlaces', elPlaces)
   elPlaces.innerHTML = strHTMLs.join('')
 }
 
@@ -65,7 +63,6 @@ function onGetLocs() {
 }
 
 function onGetUserPos() {
-  console.log('hi')
   getPosition()
     .then((pos) => {
       console.log('User position is:', pos.coords)
@@ -77,7 +74,7 @@ function onGetUserPos() {
       console.log('err!!!', err)
     })
 }
-function onPanTo() {
+function onPanTo(lat, lng) {
   console.log('Panning the Map')
-  mapService.panTo(35.6895, 139.6917)
+  mapService.panTo(lat, lng)
 }
