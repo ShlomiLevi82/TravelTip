@@ -2,7 +2,6 @@ import { locService } from './services/loc.service.js'
 import { mapService } from './services/map.service.js'
 import { placeService } from './services/place.service.js'
 import { storageService } from './services/async-storage.service.js'
-import { storageService } from './services/async-storage.service.js'
 
 window.onload = onInit
 window.onAddMarker = onAddMarker
@@ -18,29 +17,30 @@ function onInit() {
       console.log('Map is ready')
     })
     .catch(() => console.log('Error: cannot init map'))
+  // }
+  // placeService.getPlaceById(placeId).then((places) => {
   storageService.query('placeDB', 200).then((places) => {
+    console.log('places11', places)
     renderPlaces(places)
-    console.log('places', places)
   })
 }
+// )
 
-function renderPlaces(placeList) {
-  console.log('rendering')
+function renderPlaces(places) {
+  console.log('rendering', places)
 
-  storageService.query('placeDB').then((placeList) => {
-    return placeList
+  var strHTMLs = places.map((place) => {
+    return `    <tr>
+                    <td>${place.placeName}
+                    <td>${place.lat}</td>
+                    <td>${place.lng}</td>
+                    <td>${place.createdAt}</td>
+                    <td><button>Go</button></td>
+                    <td><button>Delete</button></td>
+                </tr>`
   })
 
-  var strHTMLs = placeList.map((placeList) => {
-    return `<article class="places-preview">
-                    <p class="name">${placeList.name}</p>
-                    <p class="lat>${placeList.lat}</p>
-                </article>`
-  })
-
-  console.log('strHTMLs', strHTMLs)
   const elPlaces = document.querySelector('tbody')
-  console.log('elPlaces', elPlaces)
   elPlaces.innerHTML = strHTMLs.join('')
 }
 
@@ -65,6 +65,7 @@ function onGetLocs() {
 }
 
 function onGetUserPos() {
+  console.log('hi')
   getPosition()
     .then((pos) => {
       console.log('User position is:', pos.coords)

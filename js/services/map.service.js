@@ -17,13 +17,13 @@ function initMap(lat = 32.0749831, lng = 34.9120554) {
       center: { lat, lng },
       zoom: 15,
     })
-    console.log('Map!', gMap)
+    // console.log('Map!', gMap)
     gMap.addListener('click', (ev) => {
       console.log('ev', ev)
       const placeName = prompt('Place name?', 'Place 1')
       if (!placeName) return
-      const lat = ev.latLng.lat()
-      const lng = ev.latLng.lng()
+      const lat = ev.latLng.lat().toFixed(4)
+      const lng = ev.latLng.lng().toFixed(4)
       placeService.setPlace(placeName, lat, lng)
     })
   })
